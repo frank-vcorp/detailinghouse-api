@@ -7,7 +7,8 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "db:migrate": "node db/migrate.js",
-    "db:seed": "node db/seed.js"
+    "db:seed": "node db/seed_catalog.js",
+    "seed": "node db/seed_catalog.js"
   },
   "engines": {
     "node": ">=18.0.0"

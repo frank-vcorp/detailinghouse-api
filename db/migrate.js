@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS inventory (
   stock         INTEGER NOT NULL DEFAULT 0,
   presentation  VARCHAR(50),
   description   TEXT,
+  image_url     TEXT,
   active        BOOLEAN NOT NULL DEFAULT true,
   updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
