@@ -67,17 +67,19 @@ router.put('/:sku/price', authMiddleware, adminOnly, async (req, res) => {
 
 // PATCH /api/inventory/:sku — Actualizar campos del producto (solo admin)
 router.patch('/:sku', authMiddleware, adminOnly, async (req, res) => {
-  const { price, name, stock, description, image_url, presentation } = req.body;
+  const { price, name, stock, description, image_url, presentation, category, category_label } = req.body;
   const fields = [];
   const values = [];
   let idx = 1;
 
-  if (price !== undefined)        { fields.push(`price = $${idx++}`);        values.push(parseFloat(price)); }
-  if (name !== undefined)         { fields.push(`name = $${idx++}`);         values.push(name); }
-  if (stock !== undefined)        { fields.push(`stock = $${idx++}`);        values.push(parseInt(stock)); }
-  if (description !== undefined)  { fields.push(`description = $${idx++}`);  values.push(description); }
-  if (image_url !== undefined)    { fields.push(`image_url = $${idx++}`);    values.push(image_url); }
-  if (presentation !== undefined) { fields.push(`presentation = $${idx++}`); values.push(presentation); }
+  if (price !== undefined)          { fields.push(`price = $${idx++}`);          values.push(parseFloat(price)); }
+  if (name !== undefined)           { fields.push(`name = $${idx++}`);           values.push(name); }
+  if (stock !== undefined)          { fields.push(`stock = $${idx++}`);          values.push(parseInt(stock)); }
+  if (description !== undefined)    { fields.push(`description = $${idx++}`);    values.push(description); }
+  if (image_url !== undefined)      { fields.push(`image_url = $${idx++}`);      values.push(image_url); }
+  if (presentation !== undefined)   { fields.push(`presentation = $${idx++}`);   values.push(presentation); }
+  if (category !== undefined)       { fields.push(`category = $${idx++}`);       values.push(category); }
+  if (category_label !== undefined) { fields.push(`category_label = $${idx++}`); values.push(category_label); }
 
   if (fields.length === 0)
     return res.status(400).json({ error: 'No hay campos para actualizar' });
