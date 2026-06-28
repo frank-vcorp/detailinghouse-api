@@ -132,6 +132,13 @@ CREATE INDEX IF NOT EXISTS idx_sales_client_id     ON sales(client_id);
 CREATE INDEX IF NOT EXISTS idx_appointments_date   ON appointments(date);
 CREATE INDEX IF NOT EXISTS idx_cash_movements_sess ON cash_movements(session_id);
 CREATE INDEX IF NOT EXISTS idx_clients_phone       ON clients(phone);
+
+-- Migraciones incrementales (ALTER para tablas ya existentes)
+ALTER TABLE inventory ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE inventory ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT true;
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_type VARCHAR(50);
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_plate VARCHAR(20);
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS notes TEXT;
 `;
 
 async function migrate() {
@@ -159,7 +166,7 @@ async function migrate() {
     }
   } catch (err) {
     console.error('❌ Error en migración:', err.message);
-    process.exit(1);
+    // No salir con error para no romper el startup del server
   } finally {
     client.release();
     await pool.end();
