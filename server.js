@@ -119,9 +119,12 @@ const server = app.listen(PORT, '0.0.0.0', async () => {
           stock INTEGER NOT NULL DEFAULT 0,
           presentation VARCHAR(50),
           description TEXT,
+          image_url TEXT,
           active BOOLEAN NOT NULL DEFAULT true,
           updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
+        ALTER TABLE inventory ADD COLUMN IF NOT EXISTS image_url TEXT;
+        ALTER TABLE inventory ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT true;
         CREATE TABLE IF NOT EXISTS clients (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
           name VARCHAR(100) NOT NULL,
@@ -200,6 +203,10 @@ const server = app.listen(PORT, '0.0.0.0', async () => {
         );
         CREATE INDEX IF NOT EXISTS idx_sales_created_at ON sales(created_at DESC);
         CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(date);
+        CREATE INDEX IF NOT EXISTS idx_clients_phone ON clients(phone);
+        ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_type VARCHAR(50);
+        ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_plate VARCHAR(20);
+        ALTER TABLE clients ADD COLUMN IF NOT EXISTS notes TEXT;
       `);
       console.log('✅ Tablas creadas');
 
