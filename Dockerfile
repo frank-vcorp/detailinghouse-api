@@ -3,22 +3,16 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copiar dependencias
 COPY package*.json ./
 RUN npm ci --omit=dev
 
-# Copiar código fuente
 COPY . .
 
 ENV NODE_ENV=production
 
-# Railway asigna PORT automáticamente como variable de entorno
-# No fijar PORT aquí — Railway lo inyecta solo
+EXPOSE 8080
 
-EXPOSE 3000
-
-# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-  CMD wget -qO- http://localhost:${PORT:-3000}/health || exit 1
+  CMD wget -qO- http://localhost:${PORT:-8080}/health || exit 1
 
 CMD ["node", "server.js"]
