@@ -3,11 +3,11 @@ const router = require('express').Router();
 const pool = require('../db/pool');
 const { authMiddleware, adminOnly } = require('../middleware/auth');
 
-// GET /api/inventory — Listar todo el inventario
-router.get('/', authMiddleware, async (req, res) => {
+// GET /api/inventory — Listar inventario (público: sin auth para catálogo)
+router.get('/', async (req, res) => {
   try {
     const { rows } = await pool.query(
-      'SELECT * FROM inventory WHERE active = true ORDER BY category, name'
+      'SELECT sku, name, category, category_label, price, stock, presentation, description, image_url FROM inventory WHERE active = true ORDER BY category, name'
     );
     res.json(rows);
   } catch (err) {
@@ -15,8 +15,8 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// GET /api/inventory/:sku — Detalle de un producto
-router.get('/:sku', authMiddleware, async (req, res) => {
+// GET /api/inventory/:sku — Detalle de un producto (público)
+router.get('/:sku', async (req, res) => {
   try {
     const { rows } = await pool.query(
       'SELECT * FROM inventory WHERE sku = $1',
