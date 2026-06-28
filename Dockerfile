@@ -3,21 +3,22 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copiar dependencias primero (cache de capas Docker)
+# Copiar dependencias
 COPY package*.json ./
 RUN npm ci --omit=dev
 
 # Copiar código fuente
 COPY . .
 
-# Puerto de Railway (variable de entorno)
-ENV PORT=3000
 ENV NODE_ENV=production
 
-EXPOSE $PORT
+# Railway asigna PORT automáticamente como variable de entorno
+# No fijar PORT aquí — Railway lo inyecta solo
+
+EXPOSE 3000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-  CMD wget -qO- http://localhost:$PORT/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+  CMD wget -qO- http://localhost:${PORT:-3000}/health || exit 1
 
 CMD ["node", "server.js"]
