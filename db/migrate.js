@@ -36,6 +36,23 @@ CREATE TABLE IF NOT EXISTS inventory (
   updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Servicios (paquetes y servicios individuales)
+CREATE TABLE IF NOT EXISTS services (
+  id            VARCHAR(20) PRIMARY KEY,
+  name          VARCHAR(100) NOT NULL,
+  price         NUMERIC(10,2) NOT NULL DEFAULT 0,
+  description   TEXT,
+  emoji         VARCHAR(10),
+  category      VARCHAR(50) NOT NULL DEFAULT 'principal',
+  duration      INTEGER,
+  active        BOOLEAN NOT NULL DEFAULT true,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_services_category ON services(category);
+CREATE INDEX IF NOT EXISTS idx_services_active    ON services(active);
+
 -- Clientes con puntos de fidelidad
 CREATE TABLE IF NOT EXISTS clients (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),

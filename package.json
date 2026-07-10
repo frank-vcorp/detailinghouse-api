@@ -8,6 +8,7 @@
     "dev": "nodemon server.js",
     "db:migrate": "node db/migrate.js",
     "db:seed": "node db/seed_catalog.js",
+    "db:seed:services": "node db/seed_services.js",
     "seed": "node db/seed_catalog.js"
   },
   "engines": {

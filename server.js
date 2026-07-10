@@ -40,6 +40,7 @@ app.use(express.json({ limit: '2mb' }));
 // ── Rutas ────────────────────────────────────────────────
 app.use('/api/auth',         require('./routes/auth'));
 app.use('/api/inventory',    require('./routes/inventory'));
+app.use('/api/services',     require('./routes/services'));
 app.use('/api/clients',      require('./routes/clients'));
 app.use('/api/sales',        require('./routes/sales'));
 app.use('/api/appointments', require('./routes/appointments'));
@@ -60,7 +61,7 @@ app.get('/', (req, res) => {
   res.json({
     name: 'DetailingHouse API',
     version: '1.0.0',
-    endpoints: ['/api/auth', '/api/inventory', '/api/clients', '/api/sales', '/api/appointments', '/api/cash'],
+    endpoints: ['/api/auth', '/api/inventory', '/api/services', '/api/clients', '/api/sales', '/api/appointments', '/api/cash'],
     health: '/health'
   });
 });
