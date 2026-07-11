@@ -13,10 +13,10 @@ const services = [
     badge: 'premium',
     description: 'Paquete completo premium con todos los servicios principales y secundarios.',
     prices_json: {
-      compacto: 2644,
-      sedan: 3245,
-      pickup: 3846,
-      luxury: null  // null = "Cotización"
+      compacto: 2288,    // 2200 × 1.04 = 2288 (sin IVA)
+      sedan: 2798,       // 2690 × 1.04
+      pickup: 3316,      // 3188 × 1.04
+      luxury: null       // null = "Cotización"
     }
   },
   {
@@ -28,9 +28,9 @@ const services = [
     badge: 'popular',
     description: 'Paquete intermedio con servicios esenciales y algunos secundarios.',
     prices_json: {
-      compacto: 2283,
-      sedan: 2884,
-      pickup: 3485,
+      compacto: 1976,    // 1900 × 1.04
+      sedan: 2417,       // 2324 × 1.04
+      pickup: 2864,      // 2754 × 1.04
       luxury: null
     }
   },
@@ -43,9 +43,9 @@ const services = [
     badge: 'basic',
     description: 'Lavado básico con productos premium.',
     prices_json: {
-      compacto: 300,
-      sedan: 370,
-      pickup: 440,
+      compacto: 260,     // 250 × 1.04
+      sedan: 318,        // 306 × 1.04
+      pickup: 376,       // 362 × 1.04
       luxury: null
     }
   },
@@ -57,9 +57,9 @@ const services = [
     category: 'secundario',
     description: 'Limpieza profunda del motor con vapor a alta presión.',
     prices_json: {
-      compacto: 601,
-      sedan: 601,
-      pickup: 601,
+      compacto: 520,     // 500 × 1.04
+      sedan: 520,
+      pickup: 520,
       luxury: null
     }
   },
@@ -69,11 +69,11 @@ const services = [
     price: 800,
     emoji: '🛡️',
     category: 'secundario',
-    description: 'Aplicación de sellador hidrofóbico en vidículos.',
+    description: 'Aplicación de sellador hidrofóbico en vidrios.',
     prices_json: {
-      compacto: 961,
-      sedan: 961,
-      pickup: 961,
+      compacto: 832,     // 800 × 1.04
+      sedan: 832,
+      pickup: 832,
       luxury: null
     }
   },
@@ -85,9 +85,9 @@ const services = [
     category: 'secundario',
     description: 'Restauración de faros opacos o amarillentos.',
     prices_json: {
-      compacto: 601,
-      sedan: 601,
-      pickup: 601,
+      compacto: 520,
+      sedan: 520,
+      pickup: 520,
       luxury: null
     }
   },
@@ -99,9 +99,9 @@ const services = [
     category: 'secundario',
     description: 'Limpieza profunda de tapicería con extracción.',
     prices_json: {
-      compacto: 1082,
-      sedan: 1082,
-      pickup: 1082,
+      compacto: 936,     // 900 × 1.04
+      sedan: 936,
+      pickup: 936,
       luxury: null
     }
   },
@@ -113,9 +113,9 @@ const services = [
     category: 'secundario',
     description: 'Ozonificación del sistema de aire acondicionado.',
     prices_json: {
-      compacto: 361,
-      sedan: 361,
-      pickup: 361,
+      compacto: 312,     // 300 × 1.04
+      sedan: 312,
+      pickup: 312,
       luxury: null
     }
   }
