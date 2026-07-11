@@ -45,6 +45,9 @@ CREATE TABLE IF NOT EXISTS services (
   emoji         VARCHAR(10),
   category      VARCHAR(50) NOT NULL DEFAULT 'principal',
   duration      INTEGER,
+  prices_json   JSONB,                    -- Precios por tamaño de vehículo: {compacto, sedan, pickup, luxury}
+  badge         VARCHAR(20),              -- 'premium' | 'popular' | 'basic' | NULL
+  image_url     TEXT,
   active        BOOLEAN NOT NULL DEFAULT true,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -156,6 +159,9 @@ ALTER TABLE inventory ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT t
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_type VARCHAR(50);
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_plate VARCHAR(20);
 ALTER TABLE clients ADD COLUMN IF NOT EXISTS notes TEXT;
+ALTER TABLE services ADD COLUMN IF NOT EXISTS prices_json JSONB;
+ALTER TABLE services ADD COLUMN IF NOT EXISTS badge VARCHAR(20);
+ALTER TABLE services ADD COLUMN IF NOT EXISTS image_url TEXT;
 `;
 
 async function migrate() {

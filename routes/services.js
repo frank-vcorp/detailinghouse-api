@@ -20,7 +20,7 @@ router.get('/last-update', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const { rows } = await pool.query(
-      `SELECT id, name, price, description, emoji, category, duration, active
+      `SELECT id, name, price, description, emoji, category, duration, prices_json, badge, image_url, active
        FROM services
        WHERE active = true
        ORDER BY category, name`
@@ -47,7 +47,7 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/services — Crear servicio (solo admin)
 router.post('/', authMiddleware, adminOnly, async (req, res) => {
-  const { id, name, price, description, emoji, category, duration } = req.body;
+  const { id, name, price, description, emoji, category, duration, prices_json, badge, image_url } = req.body;
 
   if (!id || !name) {
     return res.status(400).json({ error: 'ID y nombre son requeridos' });
@@ -58,8 +58,8 @@ router.post('/', authMiddleware, adminOnly, async (req, res) => {
 
   try {
     const { rows } = await pool.query(
-      `INSERT INTO services (id, name, price, description, emoji, category, duration)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO services (id, name, price, description, emoji, category, duration, prices_json, badge, image_url)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
        RETURNING *`,
       [
         id,
@@ -69,6 +69,9 @@ router.post('/', authMiddleware, adminOnly, async (req, res) => {
         emoji || null,
         category || 'principal',
         duration !== undefined && duration !== null ? parseInt(duration) : null,
+        prices_json ? JSON.stringify(prices_json) : null,
+        badge || null,
+        image_url || null,
       ]
     );
     res.status(201).json(rows[0]);
@@ -80,7 +83,7 @@ router.post('/', authMiddleware, adminOnly, async (req, res) => {
 
 // PATCH /api/services/:id — Actualizar campos del servicio (solo admin)
 router.patch('/:id', authMiddleware, adminOnly, async (req, res) => {
-  const { name, price, description, emoji, category, duration } = req.body;
+  const { name, price, description, emoji, category, duration, prices_json, badge, image_url } = req.body;
   const fields = [];
   const values = [];
   let idx = 1;
@@ -91,6 +94,9 @@ router.patch('/:id', authMiddleware, adminOnly, async (req, res) => {
   if (emoji !== undefined)        { fields.push(`emoji = $${idx++}`);        values.push(emoji); }
   if (category !== undefined)     { fields.push(`category = $${idx++}`);     values.push(category); }
   if (duration !== undefined)     { fields.push(`duration = $${idx++}`);     values.push(parseInt(duration)); }
+  if (prices_json !== undefined)  { fields.push(`prices_json = $${idx++}`);  values.push(JSON.stringify(prices_json)); }
+  if (badge !== undefined)        { fields.push(`badge = $${idx++}`);        values.push(badge); }
+  if (image_url !== undefined)    { fields.push(`image_url = $${idx++}`);    values.push(image_url); }
 
   if (fields.length === 0) {
     return res.status(400).json({ error: 'No hay campos para actualizar' });
