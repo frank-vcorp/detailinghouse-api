@@ -15,6 +15,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/inventory/last-update — Timestamp de última actualización (público)
+router.get('/last-update', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT MAX(updated_at) as last_update FROM inventory'
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET /api/inventory/:sku — Detalle de un producto (público)
 router.get('/:sku', async (req, res) => {
   try {
