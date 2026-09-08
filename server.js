@@ -45,6 +45,7 @@ app.use('/api/clients',      require('./routes/clients'));
 app.use('/api/sales',        require('./routes/sales'));
 app.use('/api/appointments', require('./routes/appointments'));
 app.use('/api/cash',         require('./routes/cash'));
+app.use('/api/qr-events',    require('./routes/qr-events'));
 
 // ── Health check ─────────────────────────────────────────
 app.get('/health', async (req, res) => {
@@ -61,7 +62,7 @@ app.get('/', (req, res) => {
   res.json({
     name: 'DetailingHouse API',
     version: '1.0.0',
-    endpoints: ['/api/auth', '/api/inventory', '/api/services', '/api/clients', '/api/sales', '/api/appointments', '/api/cash'],
+    endpoints: ['/api/auth', '/api/inventory', '/api/services', '/api/clients', '/api/sales', '/api/appointments', '/api/cash', '/api/qr-events'],
     health: '/health'
   });
 });
@@ -205,6 +206,12 @@ const server = app.listen(PORT, '0.0.0.0', async () => {
         CREATE INDEX IF NOT EXISTS idx_sales_created_at ON sales(created_at DESC);
         CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(date);
         CREATE INDEX IF NOT EXISTS idx_clients_phone ON clients(phone);
+        CREATE TABLE IF NOT EXISTS qr_event_counters (
+          event       VARCHAR(32) PRIMARY KEY,
+          total       BIGINT NOT NULL DEFAULT 0,
+          updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          CONSTRAINT qr_event_counters_event_check CHECK (event IN ('visit','whatsapp_open'))
+        );
         ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_type VARCHAR(50);
         ALTER TABLE clients ADD COLUMN IF NOT EXISTS car_plate VARCHAR(20);
         ALTER TABLE clients ADD COLUMN IF NOT EXISTS notes TEXT;

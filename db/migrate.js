@@ -153,6 +153,15 @@ CREATE INDEX IF NOT EXISTS idx_appointments_date   ON appointments(date);
 CREATE INDEX IF NOT EXISTS idx_cash_movements_sess ON cash_movements(session_id);
 CREATE INDEX IF NOT EXISTS idx_clients_phone       ON clients(phone);
 
+-- Contadores agregados del QR /citas (FEATURE-20260907-01)
+-- Guarda totales por evento; no almacena datos personales.
+CREATE TABLE IF NOT EXISTS qr_event_counters (
+  event       VARCHAR(32) PRIMARY KEY,
+  total       BIGINT NOT NULL DEFAULT 0,
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CONSTRAINT qr_event_counters_event_check CHECK (event IN ('visit','whatsapp_open'))
+);
+
 -- Migraciones incrementales (ALTER para tablas ya existentes)
 ALTER TABLE inventory ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE inventory ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT true;
